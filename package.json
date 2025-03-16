@@ -1,0 +1,21 @@
+{
+  "name": "tmdb-cli",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bin": {
+    "tmdb-app": "./index.js"
+  },
+  "description": "",
+  "dependencies": {
+    "axios": "^1.8.3",
+    "commander": "^13.1.0",
+    "dotenv": "^16.4.7"
+  }
+}
