@@ -2,6 +2,7 @@
 
 import axios from 'axios';
 import { program } from 'commander';
+import Table from 'cli-table3';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -9,6 +10,7 @@ dotenv.config();
 const API_KEY = process.env.TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
+// Define the endpoints
 const ENDPOINTS = {
     popular: "popular",
     top: "top_rated",
@@ -33,16 +35,45 @@ async function getmovies(type){
         });
 
         const movies = response.data.results;
-
+        
         if (movies.length === 0) {
             console.log("No movies found.");
-        } else {
-            movies.forEach((movie, index) => {
-                console.log(`${index + 1}: ${movie.title} (${movie.release_date})`);
-            });
+            return;
         }
+
+        // Table for structured output
+        const table = new Table({
+            head: [ '#', 'Title', 'Release Date', 'Rating' ],
+            colWidths: [4, 40, 15, 10]
+        });
+
+        // Add each movie to the table
+        movies.forEach((movie, index) => {
+            // Format rating
+            const rating = movie.vote_average.toFixed(1);
+            let ratingText;
+
+            if (rating >= 8) {
+                ratingText = `${rating}/10`;
+            } else if (rating >= 6) {
+                ratingText = `${rating}/10`;
+            } else {
+                ratingText = `${rating}/10`;
+            }
+
+            table.push([
+                index + 1,
+                movie.title,
+                movie.release_date,
+                ratingText
+            ]);
+        });
+
+        // Print the table
+        console.log(`\n🎬 ${type.charAt(0).toUpperCase() + type.slice(1)} Movies:\n`)
+        console.log(table.toString());
     } catch (error) {
-        console.log("Error fetching movies:", error);
+        console.log("Error fetching movies:", error.message);
     }
 }
 
@@ -52,10 +83,6 @@ program
     .description('TMDB CLI')
     .option("--type <type>", "Type of movies (popular, top, playing, upcoming)")
     .action((options) => {
-        if (!options.type) {
-            console.log("Please specify a valid type of movie from popular, top, playing, upcoming");
-            return;
-        }
         getmovies(options.type);
     });
 
