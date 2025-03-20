@@ -85,9 +85,6 @@ Run the following commands to fetch movie data:
 - Ensure your `.env` file contains a valid `TMDB_API_KEY`.
 - Check for typos in the command arguments.
 
-## License
-This project is licensed under the MIT License.
-
 ---
 Happy movie browsing! 🎬
 
